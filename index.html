@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קבוצת המוביל החדש | הפתרון המוביל לתובלה ושירותי מנופים כבדים</title>
+    <meta name="description" content="המוביל החדש – החברה המובילה בישראל בהרמת מטענים ושינוע כבד. עם צי מנופים מתקדם וצוות מקצועי, אנו מספקים פתרונות בטוחים ויעילים לכל פרויקט.">
+    <meta name="theme-color" content="#4054b2">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue: #4054b2;
+            --blue-dark: #2d3a8c;
+            --blue-light: #5a6ec7;
+            --blue-bg: #eef1fb;
+            --blue-glow: rgba(64, 84, 178, 0.15);
+            --red: #d90429;
+            --red-light: #ef233c;
+            --white: #ffffff;
+            --gray-50: #f8f9fc;
+            --gray-100: #f0f1f5;
+            --gray-200: #e2e4ea;
+            --gray-300: #cdd0d9;
+            --gray-500: #6b7080;
+            --gray-700: #333845;
+            --gray-900: #111827;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--gray-700);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .rd1 { transition-delay: 0.1s; } .rd2 { transition-delay: 0.2s; } .rd3 { transition-delay: 0.3s; } .rd4 { transition-delay: 0.4s; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; right: 0; left: 0; z-index: 100;
+            padding: 14px 0; background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s;
+        }
+        .navbar.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo img { height: 48px; }
+        .nav-links { display: flex; gap: 28px; align-items: center; list-style: none; }
+        .nav-links a { font-size: 0.88rem; color: var(--gray-700); font-weight: 500; transition: 0.3s; position: relative; }
+        .nav-links a::after { content:''; position:absolute; bottom:-4px; right:0; width:0; height:2px; background:var(--blue); transition:width 0.3s; }
+        .nav-links a:hover { color: var(--blue); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: var(--blue); color: var(--white) !important; padding: 10px 24px;
+            border-radius: 8px; font-weight: 700; font-size: 0.88rem; transition: 0.3s;
+        }
+        .nav-cta:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 4px 16px var(--blue-glow); }
+        .nav-cta::after { display: none !important; }
+        .mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+        .mobile-toggle span { display: block; width: 24px; height: 2px; background: var(--gray-900); margin: 6px 0; }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative; min-height: 100vh; display: flex; align-items: center;
+            overflow: hidden; padding: 120px 0 80px;
+        }
+        .hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay {
+            position: absolute; inset: 0; z-index: 1;
+            background: linear-gradient(135deg, rgba(64,84,178,0.85) 0%, rgba(17,24,39,0.7) 60%, rgba(17,24,39,0.5) 100%);
+        }
+        .hero .container { position: relative; z-index: 2; }
+        .hero-content { max-width: 680px; }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px; border-radius: 50px; font-size: 0.82rem; color: rgba(255,255,255,0.9);
+            font-weight: 500; margin-bottom: 20px; backdrop-filter: blur(8px);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; color: var(--white);
+            line-height: 1.2; margin-bottom: 18px;
+        }
+        .hero h1 .accent { color: var(--blue-light); }
+
+        .hero-desc { font-size: 1.15rem; color: rgba(255,255,255,0.8); line-height: 1.8; margin-bottom: 32px; max-width: 540px; }
+
+        .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .btn-primary {
+            background: var(--red); color: var(--white); padding: 16px 36px; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s; border: none; cursor: pointer; font-family: 'Heebo', sans-serif;
+        }
+        .btn-primary:hover { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217,4,41,0.25); }
+
+        .btn-outline {
+            background: transparent; color: var(--white); padding: 16px 32px; border-radius: 10px;
+            font-size: 1rem; font-weight: 600; border: 2px solid rgba(255,255,255,0.3);
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; cursor: pointer; font-family: 'Heebo', sans-serif;
+        }
+        .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+
+        .hero-stats {
+            display: flex; gap: 40px; margin-top: 48px; padding-top: 28px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+        .hero-stat-num { font-size: 2.2rem; font-weight: 800; color: var(--white); }
+        .hero-stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+        /* ===== SECTION BASE ===== */
+        .section { padding: 80px 0; }
+        .section-gray { background: var(--gray-50); }
+        .section-blue { background: var(--blue); color: var(--white); }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-tag {
+            display: inline-block; background: var(--blue-bg); color: var(--blue);
+            padding: 6px 18px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+            letter-spacing: 1px; margin-bottom: 14px;
+        }
+        .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; color: var(--gray-900); margin-bottom: 10px; }
+        .section-desc { font-size: 1rem; color: var(--gray-500); max-width: 560px; margin: 0 auto; }
+
+        /* ===== STRENGTHS ===== */
+        .strengths-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .strength-card {
+            background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px;
+            padding: 32px 24px; text-align: center; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .strength-card::before {
+            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--blue-light)); opacity: 0; transition: opacity 0.3s;
+        }
+        .strength-card:hover { border-color: var(--blue); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(64,84,178,0.08); }
+        .strength-card:hover::before { opacity: 1; }
+        .strength-icon {
+            width: 56px; height: 56px; background: var(--blue-bg); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+        }
+        .strength-icon svg { width: 26px; height: 26px; }
+        .strength-title { font-size: 1.05rem; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+        .strength-desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.7; }
+
+        /* ===== SERVICES ===== */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .service-card {
+            border-radius: 18px; overflow: hidden; background: var(--white);
+            border: 1px solid var(--gray-200); transition: 0.4s;
+        }
+        .service-card:hover { border-color: var(--blue); transform: translateY(-6px); box-shadow: 0 16px 48px rgba(64,84,178,0.1); }
+        .service-img { height: 220px; overflow: hidden; }
+        .service-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .service-card:hover .service-img img { transform: scale(1.06); }
+        .service-body { padding: 24px; }
+        .service-name { font-size: 1.1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+        .service-desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.7; margin-bottom: 16px; }
+        .service-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.85rem; font-weight: 600; color: var(--blue); transition: 0.3s;
+        }
+        .service-link:hover { gap: 10px; }
+
+        /* ===== PROJECTS ===== */
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .project-card {
+            border-radius: 18px; overflow: hidden; position: relative; height: 360px;
+            cursor: pointer; transition: 0.4s;
+        }
+        .project-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.15); }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .project-card:hover img { transform: scale(1.05); }
+        .project-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(17,24,39,0.9) 0%, rgba(17,24,39,0.2) 60%, transparent 100%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 28px;
+        }
+        .project-title { font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+        .project-desc { font-size: 0.82rem; color: rgba(255,255,255,0.75); line-height: 1.6; }
+        .project-tag {
+            position: absolute; top: 16px; right: 16px;
+            background: var(--blue); color: var(--white); padding: 5px 14px; border-radius: 50px;
+            font-size: 0.72rem; font-weight: 600;
+        }
+
+        /* ===== CTA BANNER ===== */
+        .cta-banner {
+            padding: 72px 0; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            text-align: center; color: var(--white); position: relative; overflow: hidden;
+        }
+        .cta-banner::before {
+            content: ''; position: absolute; top: -100px; left: -100px; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 60%); pointer-events: none;
+        }
+        .cta-banner h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; margin-bottom: 10px; }
+        .cta-banner p { font-size: 1.05rem; opacity: 0.85; margin-bottom: 28px; }
+        .btn-white {
+            background: var(--white); color: var(--blue); padding: 16px 36px; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; display: inline-flex; align-items: center; gap: 10px;
+            transition: 0.3s; border: none; cursor: pointer; font-family: 'Heebo', sans-serif;
+        }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.15); }
+
+        /* ===== CONTACT ===== */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .contact-info { display: flex; flex-direction: column; gap: 24px; }
+        .contact-item { display: flex; align-items: center; gap: 16px; }
+        .contact-icon {
+            width: 48px; height: 48px; background: var(--blue-bg); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .contact-icon svg { width: 22px; height: 22px; }
+        .contact-label { font-size: 0.78rem; color: var(--gray-500); }
+        .contact-value { font-size: 0.95rem; color: var(--gray-900); font-weight: 600; }
+
+        .contact-form {
+            background: var(--white); border: 1px solid var(--gray-200); border-radius: 18px;
+            padding: 32px; box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+        }
+        .form-title { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+        .form-sub { font-size: 0.85rem; color: var(--gray-500); margin-bottom: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 14px 16px; background: var(--gray-50);
+            border: 2px solid var(--gray-200); border-radius: 10px; font-size: 0.92rem;
+            color: var(--gray-900); font-family: 'Heebo', sans-serif; direction: rtl; transition: 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--blue); background: var(--white);
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--gray-500); }
+        .form-group select { appearance: none; cursor: pointer; }
+        .form-group textarea { height: 100px; resize: vertical; }
+        .form-submit {
+            width: 100%; padding: 15px; background: var(--blue); color: var(--white); border: none;
+            border-radius: 10px; font-size: 1.05rem; font-weight: 700; font-family: 'Heebo', sans-serif;
+            cursor: pointer; transition: 0.3s;
+        }
+        .form-submit:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 6px 20px var(--blue-glow); }
+
+        /* ===== FOOTER ===== */
+        .footer { padding: 48px 0 24px; background: var(--gray-900); color: rgba(255,255,255,0.6); }
+        .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+        .footer-brand p { font-size: 0.85rem; line-height: 1.8; margin-top: 16px; max-width: 280px; }
+        .footer-brand img { height: 44px; filter: brightness(10); }
+        .footer-title { font-size: 0.9rem; font-weight: 700; color: var(--white); margin-bottom: 16px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { font-size: 0.85rem; color: rgba(255,255,255,0.5); transition: 0.3s; }
+        .footer-links a:hover { color: var(--white); }
+        .footer-social { display: flex; gap: 12px; margin-top: 12px; }
+        .footer-social a {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.08); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: 0.3s;
+        }
+        .footer-social a:hover { background: var(--blue); }
+        .footer-bottom {
+            padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+        }
+        .footer-copy { font-size: 0.78rem; }
+        .footer-copy a { color: var(--blue-light); }
+
+        /* ===== FLOATING ===== */
+        .float-phone {
+            position: fixed; bottom: 24px; left: 24px; z-index: 999; width: 58px; height: 58px;
+            background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 20px var(--blue-glow); transition: 0.3s;
+        }
+        .float-phone svg { width: 24px; height: 24px; }
+        .float-phone:hover { transform: scale(1.1); box-shadow: 0 6px 28px var(--blue-glow); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .strengths-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-content { max-width: 100%; }
+            .hero-stats { gap: 24px; flex-wrap: wrap; }
+            .services-grid, .projects-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .nav-links.active {
+                display: flex; flex-direction: column; position: absolute; top: 100%; right: 0; left: 0;
+                background: var(--white); padding: 20px; gap: 14px;
+                border-bottom: 1px solid var(--gray-200); box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            }
+            .nav-links.active a::after { display: none; }
+        }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero-buttons { flex-direction: column; }
+            .btn-primary, .btn-outline, .btn-white { width: 100%; justify-content: center; }
+            .strengths-grid { grid-template-columns: 1fr; }
+            .hero-stats { flex-direction: column; gap: 16px; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="nav-logo">
+                <img src="https://hamovil.co.il/wp-content/uploads/2024/08/לוגו-3-01.svg" alt="קבוצת המוביל החדש">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">אודות</a></li>
+                <li><a href="#services">שירותים</a></li>
+                <li><a href="#projects">פרויקטים</a></li>
+                <li><a href="#contact">צרו קשר</a></li>
+                <li><a href="tel:0504474005" class="nav-cta">הזמנת מנוף</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="תפריט">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="https://hamovil.co.il/wp-content/uploads/2025/02/להשתמש-בתמונה-הזאת-1-e1738690768456.jpg" alt="קבוצת המוביל החדש">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content reveal">
+                <div class="hero-badge">כבר 50 שנה בשטח</div>
+                <h1>הפתרון <span class="accent">המוביל</span> לתובלה ושירותי מנופים כבדים</h1>
+                <p class="hero-desc">לכל פרויקט, בכל גובה — עם צי מנופים מתקדם, צוות מקצועי ועשורים של ניסיון. מהתכנון ועד הביצוע.</p>
+                <div class="hero-buttons">
+                    <a href="tel:0504474005" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                        הזמנת מנוף
+                    </a>
+                    <a href="#about" class="btn-outline">אודותינו</a>
+                </div>
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-num">50+</div>
+                        <div class="hero-stat-label">שנות ניסיון</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">1000+</div>
+                        <div class="hero-stat-label">פרויקטים</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">24/7</div>
+                        <div class="hero-stat-label">זמינות</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STRENGTHS -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">למה המוביל החדש</div>
+                <h2 class="section-title">מובילים את התעשייה כבר חצי מאה</h2>
+            </div>
+            <div class="strengths-grid">
+                <div class="strength-card reveal rd1">
+                    <div class="strength-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3 class="strength-title">50 שנות ניסיון</h3>
+                    <p class="strength-desc">מאחורינו עשורים של ניסיון מצטבר בעבודה עם אלפים של פרויקטים מורכבים ומגוונים</p>
+                </div>
+                <div class="strength-card reveal rd2">
+                    <div class="strength-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <h3 class="strength-title">צוות מקצועי</h3>
+                    <p class="strength-desc">צוות המומחים שלנו עובד עם הכלים המתקדמים ביותר ודואג לכל פרט, קטן כגדול</p>
+                </div>
+                <div class="strength-card reveal rd3">
+                    <div class="strength-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    </div>
+                    <h3 class="strength-title">מנופים מתקדמים</h3>
+                    <p class="strength-desc">טכנולוגיה מנצחת – עם המנופים החדשניים ביותר לעבודה מדויקת</p>
+                </div>
+                <div class="strength-card reveal rd4">
+                    <div class="strength-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3 class="strength-title">בטיחות ואיכות</h3>
+                    <p class="strength-desc">הבטיחות שלכם ושל צוותי העבודה תמיד עומדת בראש סדר העדיפויות שלנו</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section section-gray" id="services">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">שירותי החברה</div>
+                <h2 class="section-title">פתרונות מקיפים לכל פרויקט</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal rd1">
+                    <div class="service-img">
+                        <img src="https://hamovil.co.il/wp-content/uploads/2025/01/לוגיסטיקה-מורכבת-לפרויקטים-גדולים-1-1-scaled.webp" alt="לוגיסטיקה מורכבת">
+                    </div>
+                    <div class="service-body">
+                        <h3 class="service-name">לוגיסטיקה מורכבת לפרויקטים גדולים</h3>
+                        <p class="service-desc">ניהול מקצה לקצה של כל הלוגיסטיקה – מהתכנון ועד הביצוע. פתרונות מותאמים אישית לפרויקטים בקנה מידה גדול.</p>
+                        <a href="#contact" class="service-link">שירותים נוספים ←</a>
+                    </div>
+                </div>
+                <div class="service-card reveal rd2">
+                    <div class="service-img">
+                        <img src="https://hamovil.co.il/wp-content/uploads/2025/01/שינוע-לאתרי-בנייה-1-scaled.webp" alt="הובלה ושינוע">
+                    </div>
+                    <div class="service-body">
+                        <h3 class="service-name">הובלה ושינוע לאתרי בנייה</h3>
+                        <p class="service-desc">משאיות וציוד מתקדם להובלת חומרים כבדים בצורה בטוחה ומדויקת. הגעה לכל אתר בנייה בארץ.</p>
+                        <a href="#contact" class="service-link">שירותים נוספים ←</a>
+                    </div>
+                </div>
+                <div class="service-card reveal rd3">
+                    <div class="service-img">
+                        <img src="https://hamovil.co.il/wp-content/uploads/2025/01/פתרונות-הרמה-כבדה-1-scaled.webp" alt="פתרונות הרמה כבדה">
+                    </div>
+                    <div class="service-body">
+                        <h3 class="service-name">פתרונות הרמה כבדה</h3>
+                        <p class="service-desc">עם מנופים שמגיעים לכל גובה ויכולת לשנע את המשקלים הכבדים ביותר. דיוק מירבי בכל הרמה.</p>
+                        <a href="#contact" class="service-link">שירותים נוספים ←</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">פרויקטים נבחרים</div>
+                <h2 class="section-title">מהפרויקטים האחרונים שלנו</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card reveal rd1">
+                    <img src="https://hamovil.co.il/wp-content/uploads/2025/01/1-1-e1737995273805.jpg" alt="מיגונית ליישוב יערה">
+                    <div class="project-tag">ביטחון</div>
+                    <div class="project-overlay">
+                        <h3 class="project-title">מיגונית ליישוב יערה</h3>
+                        <p class="project-desc">מובילים ביטחון לתושבים — כל אתגר, כל משימה, בכל תנאי!</p>
+                    </div>
+                </div>
+                <div class="project-card reveal rd2">
+                    <img src="https://hamovil.co.il/wp-content/uploads/2025/01/11.jpg" alt="כלי ימי מיוחד חיל הים">
+                    <div class="project-tag">צבאי</div>
+                    <div class="project-overlay">
+                        <h3 class="project-title">כלי ימי מיוחד — חיל הים</h3>
+                        <p class="project-desc">הנפת ושינוע כלי ימי מיוחד מדרום לצפון בפרויקט לוגיסטי מורכב ומרתק</p>
+                    </div>
+                </div>
+                <div class="project-card reveal rd3">
+                    <img src="https://hamovil.co.il/wp-content/uploads/2025/01/1-e1737995312687.webp" alt="חדרי חשמל">
+                    <div class="project-tag">תשתיות</div>
+                    <div class="project-overlay">
+                        <h3 class="project-title">שינוע חדרי חשמל</h3>
+                        <p class="project-desc">שינוע חדרי חשמל – דיוק, בטיחות ושיתוף פעולה שמביאים תוצאות</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-banner reveal">
+        <div class="container">
+            <h2>צריכים מנוף? אנחנו כאן בשבילכם</h2>
+            <p>צוות מקצועי, ציוד מתקדם ושירות אמין — לכל פרויקט בכל גודל</p>
+            <a href="tel:0504474005" class="btn-white">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                050-4474005
+            </a>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section-gray" id="contact">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">צרו קשר</div>
+                <h2 class="section-title">נשמח לשמוע מכם</h2>
+            </div>
+            <div class="contact-grid">
+                <div class="reveal">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-label">הזמנת מנוף</div>
+                                <a href="tel:0504474005" class="contact-value">050-4474005</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-label">משרד ראשי</div>
+                                <a href="tel:049911911" class="contact-value">04-9911911</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-label">אימייל</div>
+                                <a href="mailto:ali@hmovil.co.il" class="contact-value">ali@hmovil.co.il</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#4054b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-label">כתובת</div>
+                                <div class="contact-value">כניסה ראשית דיר אל אסד-בענה</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form reveal rd2">
+                    <h3 class="form-title">השאירו פרטים ונחזור אליכם</h3>
+                    <p class="form-sub">מלאו את הטופס ונציג יצור אתכם קשר בהקדם</p>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group"><input type="text" placeholder="שם" required></div>
+                            <div class="form-group"><input type="tel" placeholder="טלפון" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><input type="text" placeholder="שם חברה (אופציונלי)"></div>
+                            <div class="form-group"><input type="email" placeholder="מייל"></div>
+                        </div>
+                        <div class="form-group">
+                            <select>
+                                <option value="" disabled selected>באיזה תחום הפנייה?</option>
+                                <option>השכרת מנוף / קבלת הצעת מחיר</option>
+                                <option>ייעוץ טכני ובחירת מנוף מתאים</option>
+                                <option>עבודה משותפת / הצעת שיתוף פעולה</option>
+                                <option>קריירה ועבודה בחברה</option>
+                                <option>שירות לקוחות ותמיכה</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="form-submit">שליחה ←</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://hamovil.co.il/wp-content/uploads/2024/08/לוגו-3-01.svg" alt="המוביל החדש">
+                    <p>המוביל החדש – החברה המובילה בישראל בהרמת מטענים ושינוע כבד. עם צי מנופים מתקדם וצוות מקצועי.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/hamovilh/" target="_blank">f</a>
+                        <a href="https://instagram.com/hamovil_hadash_cranes/" target="_blank">ig</a>
+                        <a href="https://tiktok.com/@hamovil.hadsh.cranes" target="_blank">tt</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="footer-title">ניווט</div>
+                    <ul class="footer-links">
+                        <li><a href="#">דף הבית</a></li>
+                        <li><a href="#about">אודות</a></li>
+                        <li><a href="#services">שירותי החברה</a></li>
+                        <li><a href="#projects">פרויקטים</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-title">עוד</div>
+                    <ul class="footer-links">
+                        <li><a href="#">צי מנופים</a></li>
+                        <li><a href="#">דרושים</a></li>
+                        <li><a href="#">כלים למכירה</a></li>
+                        <li><a href="#contact">צרו קשר</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-title">צרו קשר</div>
+                    <ul class="footer-links">
+                        <li><a href="tel:0504474005">050-4474005</a></li>
+                        <li><a href="tel:049911911">04-9911911</a></li>
+                        <li><a href="mailto:ali@hmovil.co.il">ali@hmovil.co.il</a></li>
+                        <li><a>דיר אל אסד-בענה</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copy">© כל הזכויות שמורות לקבוצת המוביל החדש בע"מ</div>
+                <div class="footer-copy">עוצב ונבנה ע"י <a href="https://sol-ix.ai" target="_blank">Solix — Creative AI Solutions</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING PHONE -->
+    <a href="tel:0504474005" class="float-phone" aria-label="התקשרו">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    </a>
+
+    <script>
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.reveal');
+        const onScroll = () => {
+            revealEls.forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('visible');
+            });
+        };
+        window.addEventListener('scroll', onScroll);
+        window.addEventListener('load', onScroll);
+
+        // Navbar
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+
+        // Mobile menu
+        document.getElementById('mobileToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('active'));
+        document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('active')));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Form
+        document.getElementById('contactForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = e.target.querySelector('.form-submit');
+            btn.textContent = '✓ הפרטים נשלחו בהצלחה!';
+            btn.style.background = '#22c55e';
+            setTimeout(() => { btn.textContent = 'שליחה ←'; btn.style.background = ''; e.target.reset(); }, 3000);
+        });
+    </script>
+</body>
+</html>
